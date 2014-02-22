@@ -16,6 +16,7 @@
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
     <script defer="defer">
 
+      //==========================CONSTANTS==================//
       var stageWidth = 1024;
       var stageHeight = 800;
       var color = "rgb(110,110,110)";
@@ -28,6 +29,7 @@
       var paddleStartY = stage.getHeight()/2;
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
+      var ballVelocity = 1; 
 
       var layer = new Kinetic.Layer();
 
@@ -52,10 +54,10 @@
 	  });
 	  
 	  bar1.on('touchmove', function() {
-	  	
         bar1.fill = red;
+        strokeWidth: strokeWidth
       });
-	  
+
       var bar2 = new Kinetic.Rect({
         x: stage.getWidth() - paddleWidth - 1,
         y: paddleStartY,
@@ -79,10 +81,43 @@
       layer.add(bar1);
       layer.add(bar2); 
       layer.add(ball); 
+     //==========================CONSTANTS==================//
 
 
-      // add the layer to the stage
+      //==========================Update calls: ==================//
       stage.add(layer);
+      var anim = new Kinetic.Animation(function(frame) {
+      var time = frame.time,
+          timeDiff = frame.timeDiff,
+          frameRate = frame.frameRate;
+          ball.setX(ball.getX() + ballVelocity);
+          ballCollides(ball, bar1); 
+          ballCollides(ball, bar2);
+
+      // update stuff
+      }, layer);
+      
+
+    anim.start();
+
+
+    function ballCollides(ball, paddle){
+      var ballRadius = ball.getRadius(); 
+      var ballX = ball.getX(); 
+      var ballY = ball.getY(); 
+
+      var ballTop = ballY + ballRadius; 
+      var ballBottom = ballY + ballRadius; 
+      var ballLeft = ballX + ballRadius; 
+      var ballRight = ballX + ballRadius; 
+
+      var leftPaddle = paddle.getX(); 
+      var rightPaddle = paddle.getX() + paddle.getWidth();
+      var upPaddle = paddle.getY(); 
+      var downPaddle = paddle.getY() + paddle.getHeight();
+
+      
+    }
     </script>
   </body>
 </html>
