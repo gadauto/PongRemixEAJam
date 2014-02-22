@@ -1,10 +1,72 @@
-
+<!DOCTYPE HTML>
 <html>
+  <head>
+    <style>
+      body {
+        margin: auto;
+        width: 1024px;
+        height: 800px;
+        background-color: rgb(43,43,43);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
+    <script defer="defer">
 
-<head>
-	<script type="text/javascript">
-	document.write('hello world');
-	</script>
-</head>
+      var stageWidth = 1024;
+      var stageHeight = 800;
+      var color = "rgb(110,110,110)";
+      var strokeWidth = 1; 
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: stageWidth,
+        height: stageHeight
+      });
+      var paddleStartY = stage.getHeight()/2;
+      var paddleHeight = stageHeight/10; 
+      var paddleWidth = 30;
 
+      var layer = new Kinetic.Layer();
+
+      var bar1 = new Kinetic.Rect({
+        x: 1,
+        y: paddleStartY,
+        width: paddleWidth,
+        height: paddleHeight,
+      //  fill: color,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
+
+      var bar2 = new Kinetic.Rect({
+        x: stage.getWidth() - paddleWidth - 1,
+        y: paddleStartY,
+        width: paddleWidth,
+        height: paddleHeight,
+    //    fill: color,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
+
+      var ball = new Kinetic.Circle({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        radius: 70,
+      //  fill: color,
+        stroke: color,
+        strokeWidth: strokeWidth
+      }); 
+
+      // add the shape to the layer
+      layer.add(bar1);
+      layer.add(bar2); 
+      layer.add(ball); 
+
+
+      // add the layer to the stage
+      stage.add(layer);
+    </script>
+  </body>
 </html>
