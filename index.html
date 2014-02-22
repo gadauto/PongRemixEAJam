@@ -74,6 +74,7 @@
       var time = frame.time,
           timeDiff = frame.timeDiff,
           frameRate = frame.frameRate;
+          ball.setX(ball.getX() + ballVelocity);
           ballCollides(ball, bar1); 
           ballCollides(ball, bar2);
 
@@ -89,11 +90,16 @@
       var ballX = ball.getX(); 
       var ballY = ball.getY(); 
 
+      var ballTop = ballY + ballRadius; 
+      var ballBottom = ballY + ballRadius; 
+      var ballLeft = ballX + ballRadius; 
+      var ballRight = ballX + ballRadius; 
+
       var leftPaddle = paddle.getX(); 
       var rightPaddle = paddle.getX() + paddle.getWidth();
       var upPaddle = paddle.getY(); 
       var downPaddle = paddle.getY() + paddle.getHeight();
-      
+
       
     }
     </script>
