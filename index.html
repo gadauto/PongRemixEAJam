@@ -15,6 +15,7 @@
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
     <script defer="defer">
 
+      //==========================CONSTANTS==================//
       var stageWidth = 1024;
       var stageHeight = 800;
       var color = "rgb(110,110,110)";
@@ -27,6 +28,7 @@
       var paddleStartY = stage.getHeight()/2;
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
+      var ballVelocity = 1; 
 
       var layer = new Kinetic.Layer();
 
@@ -63,10 +65,28 @@
       layer.add(bar1);
       layer.add(bar2); 
       layer.add(ball); 
+     //==========================CONSTANTS==================//
 
 
-      // add the layer to the stage
+      //==========================Update calls: ==================//
       stage.add(layer);
+      var anim = new Kinetic.Animation(function(frame) {
+      var time = frame.time,
+          timeDiff = frame.timeDiff,
+          frameRate = frame.frameRate;
+          ballCollides(ball, bar1); 
+          ballCollides(ball, bar2);
+
+      // update stuff
+      }, layer);
+      
+
+    anim.start();
+
+
+    function ballCollides(ball, paddle){
+      
+    }
     </script>
   </body>
 </html>
