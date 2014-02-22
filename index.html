@@ -12,6 +12,7 @@
   </head>
   <body>
     <div id="container"></div>
+    <script src="keyboard.js"></script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
     <script defer="defer">
 
@@ -46,6 +47,9 @@
           }
         }
       });
+	  KeyboardJS.on('a', null, function() {
+	  	bar1.setY(bar.getY() + 5);
+	  });
 	  
 	  bar1.on('touchmove', function() {
 	  	
