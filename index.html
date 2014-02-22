@@ -39,9 +39,21 @@
         height: paddleHeight,
       //  fill: color,
         stroke: color,
-        strokeWidth: strokeWidth
+        strokeWidth: strokeWidth,
+        draggable: true,
+        dragBoundFunc: function(pos) {
+          return {
+            x: this.getAbsolutePosition().x,
+            y: pos.y
+          }
+        }
       });
-
+	  
+	  bar1.on('touchmove', function() {
+	  	
+        bar1.fill = red;
+      });
+	  
       var bar2 = new Kinetic.Rect({
         x: stage.getWidth() - paddleWidth - 1,
         y: paddleStartY,
