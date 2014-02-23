@@ -178,6 +178,7 @@
         var collisionResult1 = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
         var collisionResult2 = ballCollides(ball.getX() + ball.getRadius(), ball.getY(), bar2); 
         if (collisionResult1 > 0 || collisionResult2 > 0) {
+          ballVelocity += ballVelocity*.2;
           ballAngle = Math.PI - ballAngle; //Math.acos(switchX / ballVelocity);
         }
 
@@ -269,6 +270,7 @@
     function resetBall(){
       ball.setX( Math.floor((Math.random()*(stageWidth-100))+100));
       ball.setY(Math.floor((Math.random()*(stageHeight-100))+100));
+      ballVelocity = 5;
     }
 
     function getPositionFromServer(){
