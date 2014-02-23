@@ -40,7 +40,7 @@
 
       //==========================CONSTANTS==================//
       var IS_BOT_ENABLED = true;
-      var TWO_BOT_ENABLED = true; 
+      var TWO_BOT_ENABLED = false; 
       var stageWidth = 1024;
       var stageHeight = 800;
       var color = "rgb(110,110,110)";
@@ -53,8 +53,8 @@
       var paddleStartY = stage.getHeight()/2;
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
-      var ballVelocityX = (Math.random()*(2)) + 1; 
-      var ballVelocityY = (Math.random()*(2)) + 1;
+      var ballVelocity = 5;
+      var ballAngle = -2;
 
       var bar1YDelta = 0;
       var bar2YDelta = 0;
@@ -168,20 +168,21 @@
             timeDiff = frame.timeDiff,
             frameRate = frame.frameRate;
 
-        ball.setX(ball.getX() + ballVelocityX);
-        ball.setY(ball.getY() + ballVelocityY);
+        ball.setX(ball.getX() + (ballVelocity * Math.cos(ballAngle)));
+        ball.setY(ball.getY() + (ballVelocity * Math.sin(ballAngle)));
 
         moveViaBot(ball, bar2); //move usingbot
         if(TWO_BOT_ENABLED) moveViaBot(ball, bar1);
 
 
-        var collisionResult = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
-        if (collisionResult > 0) {
-          ballVelocityX *= -1;
+        var collisionResult1 = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
+        var collisionResult2 = ballCollides(ball.getX() + ball.getRadius(), ball.getY(), bar2); 
+        if (collisionResult1 > 0 || collisionResult2 > 0) {
+          ballAngle = Math.PI - ballAngle; //Math.acos(switchX / ballVelocity);
         }
-        collisionResult = ballCollides(ball.getX() + ball.getRadius(), ball.getY(), bar2); 
-        if (collisionResult > 0) {
-          ballVelocityX *= -1;
+
+        if (ball.getY() <= barTop.getY() + barTop.getHeight() || ball.getY() + ball.getRadius() >= barBottom.getY()) {
+          ballAngle = 2*Math.PI - ballAngle; // Math.asin(-switchY / ballVelocity);
         }
       
         bar1.setY(bar1.getY() + bar1YDelta);
