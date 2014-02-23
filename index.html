@@ -30,6 +30,8 @@
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
       var ballVelocity = 1; 
+      var bar1YDelta = 0;
+      var bar2YDelta = 0;
 
       var layer = new Kinetic.Layer();
 
@@ -49,8 +51,15 @@
           }
         }
       });
-	  KeyboardJS.on('a', null, function() {
-	  	bar1.setY(bar.getY() + 5);
+	  KeyboardJS.on('q', function() {
+	  	bar1YDelta = -5;
+	  }, function() {
+	  	bar1YDelta = 0;
+	  });
+	  KeyboardJS.on('a', function() {
+	  	bar1YDelta = 5;
+	  }, function() {
+	  	bar1YDelta = 0;
 	  });
 	  
 	  bar1.on('touchmove', function() {
@@ -67,6 +76,16 @@
         stroke: color,
         strokeWidth: strokeWidth
       });
+	  KeyboardJS.on('p', function() {
+	  	bar2YDelta = -5;
+	  }, function() {
+	  	bar2YDelta = 0;
+	  });
+	  KeyboardJS.on('l', function() {
+	  	bar2YDelta = 5;
+	  }, function() {
+	  	bar2YDelta = 0;
+	  });
 
       var ball = new Kinetic.Circle({
         x: stage.getWidth() / 2,
@@ -87,13 +106,15 @@
       //==========================Update calls: ==================//
       stage.add(layer);
       var anim = new Kinetic.Animation(function(frame) {
-      var time = frame.time,
-          timeDiff = frame.timeDiff,
-          frameRate = frame.frameRate;
-          ball.setX(ball.getX() + ballVelocity);
-          ballCollides(ball, bar1); 
-          ballCollides(ball, bar2);
-
+      	var time = frame.time,
+          	timeDiff = frame.timeDiff,
+          	frameRate = frame.frameRate;
+        ball.setX(ball.getX() + ballVelocity);
+        ballCollides(ball, bar1); 
+        ballCollides(ball, bar2);
+		  
+		bar1.setY(bar1.getY() + bar1YDelta);
+		bar2.setY(bar2.getY() + bar2YDelta);  
       // update stuff
       }, layer);
       
