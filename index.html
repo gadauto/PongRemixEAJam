@@ -50,7 +50,8 @@
       var paddleStartY = stage.getHeight()/2;
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
-      var ballVelocity = 1; 
+      var ballVelocityX = (Math.random()*(2)) + 1; 
+      var ballVelocityY = (Math.random()*(2)) + 1;; 
       var bar1YDelta = 0;
       var bar2YDelta = 0;
 
@@ -109,9 +110,9 @@
 	  });
 
       var ball = new Kinetic.Circle({
-        x: stage.getWidth() / 2,
-        y: stage.getHeight() / 2,
-        radius: 70,
+        x: Math.floor((Math.random()*(stageWidth-100))+100),
+        y: Math.floor((Math.random()*(stageHeight-100))+100),
+        radius: 10,
       //  fill: color,
         stroke: color,
         strokeWidth: strokeWidth
@@ -161,7 +162,9 @@
       	var time = frame.time,
           	timeDiff = frame.timeDiff,
           	frameRate = frame.frameRate;
-        ball.setX(ball.getX() + ballVelocity);
+        ball.setX(ball.getX() + ballVelocityX);
+        ball.setY(ball.getY() + ballVelocityY);
+        
         ballCollides(ball, bar1); 
         ballCollides(ball, bar2);
 		  
@@ -188,7 +191,6 @@
       var rightPaddle = paddle.getX() + paddle.getWidth();
       var upPaddle = paddle.getY(); 
       var downPaddle = paddle.getY() + paddle.getHeight();
-      
     }
 
     function paddlePart(y, paddle){
