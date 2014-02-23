@@ -38,6 +38,7 @@
     <script defer="defer">
 
       //==========================CONSTANTS==================//
+      var IS_BOT_ENABLED = false;
       var stageWidth = 1024;
       var stageHeight = 800;
       var color = "rgb(110,110,110)";
@@ -164,7 +165,8 @@
           	frameRate = frame.frameRate;
         ball.setX(ball.getX() + ballVelocityX);
         ball.setY(ball.getY() + ballVelocityY);
-        
+        moveViaBot(ball, bar2); //move usingbot
+
         ballCollides(ball, bar1); 
         ballCollides(ball, bar2);
 		  
@@ -221,6 +223,32 @@
       else return;
 
       playerHTML.innerHTML = parseInt(playerHTML.innerHTML) + 1; 
+    }
+
+    function moveViaBot(ball, bar){
+      if(IS_BOT_ENABLED){
+        var ballY = ball.getY();
+        var moveStep = stageHeight/10; 
+        if(ballY > bar.getY()){
+          if(ballY >= ( bar.getY() + moveStep)) {
+            bar.setY(bar.getY() + moveStep); 
+          }else{
+            bar.setY(ballY);
+          }
+        }else if(ballY < bar.getY()){
+          if(ballY <= (bar.getY() - moveStep)){
+            bar.setY(bar.getY() - moveStep);
+          }else{
+            bar.setY(ballY);
+          }
+        }
+
+      }
+    }
+
+    function resetBall(){
+      ball.setX( Math.floor((Math.random()*(stageWidth-100))+100));
+      ball.setY(Math.floor((Math.random()*(stageHeight-100))+100));
     }
 
     </script>
