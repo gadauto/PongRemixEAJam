@@ -12,6 +12,7 @@
   </head>
   <body>
     <div id="container"></div>
+    <script src="keyboard.js"></script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
     <script defer="defer">
 
@@ -29,6 +30,8 @@
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
       var ballVelocity = 1; 
+      var bar1YDelta = 0;
+      var bar2YDelta = 0;
 
       var layer = new Kinetic.Layer();
 
@@ -39,6 +42,28 @@
         height: paddleHeight,
       //  fill: color,
         stroke: color,
+        strokeWidth: strokeWidth,
+        draggable: true,
+        dragBoundFunc: function(pos) {
+          return {
+            x: this.getAbsolutePosition().x,
+            y: pos.y
+          }
+        }
+      });
+	  KeyboardJS.on('q', function() {
+	  	bar1YDelta = -5;
+	  }, function() {
+	  	bar1YDelta = 0;
+	  });
+	  KeyboardJS.on('a', function() {
+	  	bar1YDelta = 5;
+	  }, function() {
+	  	bar1YDelta = 0;
+	  });
+	  
+	  bar1.on('touchmove', function() {
+        bar1.fill = red;
         strokeWidth: strokeWidth
       });
 
@@ -51,6 +76,16 @@
         stroke: color,
         strokeWidth: strokeWidth
       });
+	  KeyboardJS.on('p', function() {
+	  	bar2YDelta = -5;
+	  }, function() {
+	  	bar2YDelta = 0;
+	  });
+	  KeyboardJS.on('l', function() {
+	  	bar2YDelta = 5;
+	  }, function() {
+	  	bar2YDelta = 0;
+	  });
 
       var ball = new Kinetic.Circle({
         x: stage.getWidth() / 2,
@@ -93,13 +128,15 @@
       //==========================Update calls: ==================//
       stage.add(layer);
       var anim = new Kinetic.Animation(function(frame) {
-      var time = frame.time,
-          timeDiff = frame.timeDiff,
-          frameRate = frame.frameRate;
-          ball.setX(ball.getX() + ballVelocity);
-          ballCollides(ball, bar1); 
-          ballCollides(ball, bar2);
-
+      	var time = frame.time,
+          	timeDiff = frame.timeDiff,
+          	frameRate = frame.frameRate;
+        ball.setX(ball.getX() + ballVelocity);
+        ballCollides(ball, bar1); 
+        ballCollides(ball, bar2);
+		  
+		bar1.setY(bar1.getY() + bar1YDelta);
+		bar2.setY(bar2.getY() + bar2YDelta);  
       // update stuff
       }, layer);
       
