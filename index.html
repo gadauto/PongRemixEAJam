@@ -96,7 +96,29 @@
         strokeWidth: strokeWidth
       }); 
 
+      var barTop = new Kinetic.Rect({
+        x: 1,
+        y: 2,
+        width: stage.getWidth() - 2,
+        height: 30,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
+
+    var barBottom = new Kinetic.Rect({
+        x: 1,
+        y: stage.getHeight() - 32,
+        width: stage.getWidth() - 2,
+        height: 30,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
+
+
       // add the shape to the layer
+
+      layer.add(barTop);
+      layer.add(barBottom);
       layer.add(bar1);
       layer.add(bar2); 
       layer.add(ball); 
@@ -136,9 +158,22 @@
       var rightPaddle = paddle.getX() + paddle.getWidth();
       var upPaddle = paddle.getY(); 
       var downPaddle = paddle.getY() + paddle.getHeight();
-
       
     }
+
+    function paddlePart(y, paddle){
+      var partTop = paddle.getY(); 
+      var partPiece = paddle.getHeight()/8; 
+      var partBot = partTop + partPiece; 
+      var i = 0; 
+      while(partBot > y && i < 8){
+        partBot += partPiece; 
+        i++;
+      }
+      return i; 
+    }
+
+
     </script>
   </body>
 </html>
