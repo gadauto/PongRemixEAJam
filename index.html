@@ -38,7 +38,8 @@
     <script defer="defer">
 
       //==========================CONSTANTS==================//
-      var IS_BOT_ENABLED = false;
+      var IS_BOT_ENABLED = true;
+      var TWO_BOT_ENABLED = true; 
       var stageWidth = 1024;
       var stageHeight = 800;
       var color = "rgb(110,110,110)";
@@ -168,15 +169,10 @@
 
         ball.setX(ball.getX() + ballVelocityX);
         ball.setY(ball.getY() + ballVelocityY);
-<<<<<<< HEAD
-        moveViaBot(ball, bar2); //move usingbot
 
-        ballCollides(ball, bar1); 
-        ballCollides(ball, bar2);
-		  
-		bar1.setY(bar1.getY() + bar1YDelta);
-		bar2.setY(bar2.getY() + bar2YDelta);  
-=======
+        moveViaBot(ball, bar2); //move usingbot
+        if(TWO_BOT_ENABLED) moveViaBot(ball, bar1);
+
 
         var collisionResult = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
         if (collisionResult > 0) {
@@ -190,7 +186,8 @@
         bar1.setY(bar1.getY() + bar1YDelta);
         bar2.setY(bar2.getY() + bar2YDelta);
 
->>>>>>> 2180c9e75cde5d42e413f022e1b2b4c07882cf1e
+        updateScore(ballOutsideScreen(ball));
+
       // update stuff
       }, layer);
       
@@ -244,6 +241,7 @@
       else return;
 
       playerHTML.innerHTML = parseInt(playerHTML.innerHTML) + 1; 
+      resetBall();
     }
 
     function moveViaBot(ball, bar){
