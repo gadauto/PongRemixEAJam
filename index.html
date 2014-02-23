@@ -270,6 +270,33 @@
       ball.setY(Math.floor((Math.random()*(stageHeight-100))+100));
     }
 
+    function getPositionFromServer(){
+      $.ajax('/ballAndPaddle').done(function(data){
+        console.log(data);
+      });
+    }
+
+    function postPositionToServer(pball, paddle1, paddle2){
+      $.ajax({
+        type: "POST",
+        url:"userInput",
+        data: {
+          ball:{
+            x: pball.getX(),
+            y: pball.getY(),
+          }, 
+          bar1: { 
+            x: paddle1.getX(),
+            y: paddle1.getY(),
+          },
+          bar2: {
+            x: paddle2.getX(),
+            y: paddle2.getY(),
+          }
+        }
+      });
+    }
+
     </script>
 
 
