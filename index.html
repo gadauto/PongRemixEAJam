@@ -8,9 +8,30 @@
         height: 800px;
         background-color: rgb(43,43,43);
       }
+      .scoreBox{
+        width: 100px;
+        height: 100px; 
+        position: absolute;
+        border-color: rgb(110,110,110);
+        border-style: dashed;
+        border-width: 1px; 
+        color: rgb(110,110,110);
+        font-weight: bold;
+        font-size: 80px;
+        font-family: Impact; 
+        margin:auto;
+        margin-top: 32px;
+        padding: auto;
+        text-align: center;
+      }
+      #rightScore{
+        left: 1024px;
+      }
     </style>
   </head>
   <body>
+    <div id="leftScore" class="scoreBox"> 0 </div>
+    <div id="rightScore" class="scoreBox"> 0 </div>
     <div id="container"></div>
     <script src="keyboard.js"></script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
@@ -29,7 +50,9 @@
       var paddleStartY = stage.getHeight()/2;
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
-      var ballVelocity = 7; 
+      var ballVelocityX = (Math.random()*(2)) + 1; 
+      var ballVelocityY = (Math.random()*(2)) + 1;
+
       var bar1YDelta = 0;
       var bar2YDelta = 0;
 
@@ -88,9 +111,9 @@
     });
 
       var ball = new Kinetic.Circle({
-        x: stage.getWidth() / 2,
-        y: stage.getHeight() / 2,
-        radius: 70,
+        x: stageWidth/2,
+        y: Math.floor((Math.random()*(stageHeight-100))+100),
+        radius: 10,
       //  fill: color,
         stroke: color,
         strokeWidth: strokeWidth
@@ -114,6 +137,14 @@
         strokeWidth: strokeWidth
       });
 
+    var lineMid = new Kinetic.Rect({
+        x: stage.getWidth()/2,
+        y: 32,
+        width: 1,
+        height: stage.getHeight() - 63,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
 
       // add the shape to the layer
 
@@ -122,31 +153,33 @@
       layer.add(bar1);
       layer.add(bar2); 
       layer.add(ball); 
+      layer.add(lineMid);
      //==========================CONSTANTS==================//
 
 
       //==========================Update calls: ==================//
       stage.add(layer);
       var anim = new Kinetic.Animation(function(frame) {
+
         var time = frame.time,
             timeDiff = frame.timeDiff,
             frameRate = frame.frameRate;
-        if (ball.getX() < 1024) {
-          ball.setX(ball.getX() + ballVelocity);
-        } else {
-          return;
-        }
+
+        ball.setX(ball.getX() + ballVelocityX);
+        ball.setY(ball.getY() + ballVelocityY);
+
         var collisionResult = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
         if (collisionResult > 0) {
-          ballVelocity *= -1;
+          ballVelocityX *= -1;
         }
         collisionResult = ballCollides(ball.getX() + ball.getRadius(), ball.getY(), bar2); 
         if (collisionResult > 0) {
-          ballVelocity *= -1;
+          ballVelocityX *= -1;
         }
       
         bar1.setY(bar1.getY() + bar1YDelta);
-        bar2.setY(bar2.getY() + bar2YDelta);  
+        bar2.setY(bar2.getY() + bar2YDelta);
+
       // update stuff
       }, layer);
       
@@ -184,7 +217,26 @@
       return i; 
     }
 
+    //returns 0 if left,
+    //returns 1 if right
+    function ballOutsideScreen(ball){
+      if((ball.getX() + ball.getRadius()) < 0) return 0; 
+      else if(ball.getX() - ball.getRadius() > stage.getWidth()) return 1;
+      else return -1;
+    }
+
+    //player = 0 update left, player = 1 update right
+    function updateScore(player){
+      var playerHTML; 
+      if(player == 0 ) playerHTML = document.getElementById('leftScore');
+      else if(player == 1) playerHTML = document.getElementById('rightScore');
+      else return;
+
+      playerHTML.innerHTML = parseInt(playerHTML.innerHTML) + 1; 
+    }
 
     </script>
+
+
   </body>
 </html>
