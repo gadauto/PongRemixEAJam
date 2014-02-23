@@ -135,6 +135,14 @@
         strokeWidth: strokeWidth
       });
 
+    var lineMid = new Kinetic.Rect({
+        x: stage.getWidth()/2,
+        y: 32,
+        width: 1,
+        height: stage.getHeight() - 63,
+        stroke: color,
+        strokeWidth: strokeWidth
+      });
 
       // add the shape to the layer
 
@@ -143,6 +151,7 @@
       layer.add(bar1);
       layer.add(bar2); 
       layer.add(ball); 
+      layer.add(lineMid);
      //==========================CONSTANTS==================//
 
 
