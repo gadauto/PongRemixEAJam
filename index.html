@@ -8,9 +8,30 @@
         height: 800px;
         background-color: rgb(43,43,43);
       }
+      .scoreBox{
+        width: 100px;
+        height: 100px; 
+        position: absolute;
+        border-color: rgb(110,110,110);
+        border-style: dashed;
+        border-width: 1px; 
+        color: rgb(110,110,110);
+        font-weight: bold;
+        font-size: 80px;
+        font-family: Impact; 
+        margin:auto;
+        margin-top: 32px;
+        padding: auto;
+        text-align: center;
+      }
+      #rightScore{
+        left: 1024px;
+      }
     </style>
   </head>
   <body>
+    <div id="leftScore" class="scoreBox"> 0 </div>
+    <div id="rightScore" class="scoreBox"> 0 </div>
     <div id="container"></div>
     <script src="keyboard.js"></script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
@@ -181,7 +202,18 @@
       else return -1;
     }
 
+    //player = 0 update left, player = 1 update right
+    function updateScore(player){
+      var playerHTML; 
+      if(player == 0 ) playerHTML = document.getElementById('leftScore');
+      else if(player == 1) playerHTML = document.getElementById('rightScore');
+      else return;
+
+      playerHTML.innerHTML = parseInt(playerHTML.innerHTML) + 1; 
+    }
 
     </script>
+
+
   </body>
 </html>
