@@ -52,7 +52,8 @@
       var paddleHeight = stageHeight/10; 
       var paddleWidth = 30;
       var ballVelocityX = (Math.random()*(2)) + 1; 
-      var ballVelocityY = (Math.random()*(2)) + 1;; 
+      var ballVelocityY = (Math.random()*(2)) + 1;
+
       var bar1YDelta = 0;
       var bar2YDelta = 0;
 
@@ -74,18 +75,18 @@
           }
         }
       });
-	  KeyboardJS.on('q', function() {
-	  	bar1YDelta = -5;
-	  }, function() {
-	  	bar1YDelta = 0;
-	  });
-	  KeyboardJS.on('a', function() {
-	  	bar1YDelta = 5;
-	  }, function() {
-	  	bar1YDelta = 0;
-	  });
-	  
-	  bar1.on('touchmove', function() {
+    KeyboardJS.on('q', function() {
+      bar1YDelta = -5;
+    }, function() {
+      bar1YDelta = 0;
+    });
+    KeyboardJS.on('a', function() {
+      bar1YDelta = 5;
+    }, function() {
+      bar1YDelta = 0;
+    });
+    
+    bar1.on('touchmove', function() {
         bar1.fill = red;
         strokeWidth: strokeWidth
       });
@@ -99,19 +100,19 @@
         stroke: color,
         strokeWidth: strokeWidth
       });
-	  KeyboardJS.on('p', function() {
-	  	bar2YDelta = -5;
-	  }, function() {
-	  	bar2YDelta = 0;
-	  });
-	  KeyboardJS.on('l', function() {
-	  	bar2YDelta = 5;
-	  }, function() {
-	  	bar2YDelta = 0;
-	  });
+    KeyboardJS.on('p', function() {
+      bar2YDelta = -5;
+    }, function() {
+      bar2YDelta = 0;
+    });
+    KeyboardJS.on('l', function() {
+      bar2YDelta = 5;
+    }, function() {
+      bar2YDelta = 0;
+    });
 
       var ball = new Kinetic.Circle({
-        x: Math.floor((Math.random()*(stageWidth-100))+100),
+        x: stageWidth/2,
         y: Math.floor((Math.random()*(stageHeight-100))+100),
         radius: 10,
       //  fill: color,
@@ -160,11 +161,14 @@
       //==========================Update calls: ==================//
       stage.add(layer);
       var anim = new Kinetic.Animation(function(frame) {
-      	var time = frame.time,
-          	timeDiff = frame.timeDiff,
-          	frameRate = frame.frameRate;
+
+        var time = frame.time,
+            timeDiff = frame.timeDiff,
+            frameRate = frame.frameRate;
+
         ball.setX(ball.getX() + ballVelocityX);
         ball.setY(ball.getY() + ballVelocityY);
+<<<<<<< HEAD
         moveViaBot(ball, bar2); //move usingbot
 
         ballCollides(ball, bar1); 
@@ -172,6 +176,21 @@
 		  
 		bar1.setY(bar1.getY() + bar1YDelta);
 		bar2.setY(bar2.getY() + bar2YDelta);  
+=======
+
+        var collisionResult = ballCollides(ball.getX() - ball.getRadius(), ball.getY(), bar1); 
+        if (collisionResult > 0) {
+          ballVelocityX *= -1;
+        }
+        collisionResult = ballCollides(ball.getX() + ball.getRadius(), ball.getY(), bar2); 
+        if (collisionResult > 0) {
+          ballVelocityX *= -1;
+        }
+      
+        bar1.setY(bar1.getY() + bar1YDelta);
+        bar2.setY(bar2.getY() + bar2YDelta);
+
+>>>>>>> 2180c9e75cde5d42e413f022e1b2b4c07882cf1e
       // update stuff
       }, layer);
       
@@ -179,28 +198,30 @@
     anim.start();
 
 
-    function ballCollides(ball, paddle){
-      var ballRadius = ball.getRadius(); 
-      var ballX = ball.getX(); 
-      var ballY = ball.getY(); 
-
-      var ballTop = ballY + ballRadius; 
-      var ballBottom = ballY + ballRadius; 
-      var ballLeft = ballX + ballRadius; 
-      var ballRight = ballX + ballRadius; 
-
+    function ballCollides(ballX, ballY, paddle){
+    
       var leftPaddle = paddle.getX(); 
       var rightPaddle = paddle.getX() + paddle.getWidth();
-      var upPaddle = paddle.getY(); 
-      var downPaddle = paddle.getY() + paddle.getHeight();
+      var topPaddle = paddle.getY(); 
+      var bottomPaddle = paddle.getY() + paddle.getHeight();
+
+      if (leftPaddle <= ballX && ballX <= rightPaddle) {
+        if (topPaddle <= ballY && ballY <= bottomPaddle) {
+          var paddlePartValue = paddlePart(ballY, paddle);
+          console.log('paddlePart: '+paddlePartValue);
+          return paddlePartValue;
+        };
+      }
+      return -1;
     }
 
-    function paddlePart(y, paddle){
+    function paddlePart(ballY, paddle){
       var partTop = paddle.getY(); 
       var partPiece = paddle.getHeight()/8; 
       var partBot = partTop + partPiece; 
-      var i = 0; 
-      while(partBot > y && i < 8){
+      var i = 1; 
+      while(partBot <= ballY && i < 8){
+        console.log('ballY: ',ballY,' partBot: ', partBot, 'partPiece', partPiece, 'i: ', i);
         partBot += partPiece; 
         i++;
       }
